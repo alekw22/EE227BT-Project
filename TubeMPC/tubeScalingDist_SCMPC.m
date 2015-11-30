@@ -5,7 +5,7 @@ clear
 %% problem data
 alpha_bar = 1.8;         % maximum disturbance tube scaling
 sigma = sqrt(0.1);            % standard deviation of disturbance
-lambda = 0.422;                   
+lambda = 0.3234;                   
 beta_bar = alpha_bar/(1-lambda);     % maximum error tube scaling
 rho = 1000;                          % number of discrete samples
 h = beta_bar/rho;
