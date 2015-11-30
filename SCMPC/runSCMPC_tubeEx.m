@@ -10,7 +10,7 @@ h = 1.2;
 N = 6;         % prediction horizon
 K = 4;         % number of scenarios
 T = 5;         % number of closed loop time steps
-M = 100;        % number of closed loop simulations to run
+M = 200;        % number of closed loop simulations to run
 x0 = [-5 60]';   % initial condition
 sigma = 1/12;
 
@@ -63,4 +63,4 @@ Vemp = numViols/M    % empirical violation rate
 % Cstd = std(Cvect)    % std. deviation of closed loop stage cost
 
 %% Save
-save('data100_tubeEx.mat')
+save('data200_tubeEx.mat')
