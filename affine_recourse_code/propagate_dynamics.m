@@ -1,10 +1,11 @@
-function [ res1,res2 ] = propagate_dynamics(A,B,T,u,x_01,x_02,F,u_0,mu,Sigma)
+function [ res1,res2,res3 ] = propagate_dynamics(A,B,T,u,x_01,x_02,F,u_0,mu,Sigma)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
 n = size(x_01,1);
 x = zeros(n*(T+1),1); 
 x_nfb = zeros(n*(T+1),1); 
+U_fb = zeros(n*T,1);
 x(1:2,:) = x_01;
 x_nfb(1:2,:) = x_02;
 
@@ -23,7 +24,8 @@ end
 
 for i = 1:T
     u_fb = u_0(n*(i-1)+1:n*i,:) + F(n*(i-1)+1:n*i,1:n*i)*x(1:n*i,:);
-    x((n*i)+1:n*(i+1),:) = A*x(n*(i-1)+1:n*i,:) + B*u_fb + Wt(n*(i-1)+1:n*i,:); 
+    x((n*i)+1:n*(i+1),:) = A*x(n*(i-1)+1:n*i,:) + B*u_fb + Wt(n*(i-1)+1:n*i,:);
+    U_fb(n*(i-1)+1:n*i,:) = u_fb;
     
 end
 
@@ -61,6 +63,7 @@ end
 
 res1 = x;
 res2 = x_nfb;
+res3 = U_fb;
 
 end
 
