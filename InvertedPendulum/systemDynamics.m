@@ -11,11 +11,11 @@ T = 0.02;      % discretization time
 
 % Discrete time dynamics
 d = I*(M+m) + M*m*l^2;
-c1 = -(I+ml^2)*b/d;
+c1 = -(I+m*l^2)*b/d;
 c2 = ((m^2)*g*l^2)/d;
 c3 = -m*l*b/d;
 c4 = m*g*l*(M+m)/d;
-c5 = I+m*l^2/d;
+c5 = (I+m*l^2)/d;
 c6 = m*l/d;
 
 A = [1 T 0 0;
