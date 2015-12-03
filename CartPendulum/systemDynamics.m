@@ -1,10 +1,11 @@
 % Discrete time system dynamics
+clear
 
 % System Parameters
 M = 0.5;       % mass of cart [kg]
 m = 0.2;       % mass of the pendulum [kg]
 b = 0.1;       % cart coefficient of friction [N/m/s]
-c = 0.05;         % pendulum coefficient of friction
+c = 0.01;         % pendulum coefficient of friction
 I = 0.006;     % pendulum moment of inertia [kg.m/s^2]
 g = 9.8;       % acceleration of gravity [m/s^2]
 l = 0.3;       % length of pendulum
@@ -14,17 +15,18 @@ T = 0.05;      % discretization time
 d = I*(M+m) + M*m*l^2;
 c1 = -(I+m*l^2)*b/d;
 c2 = ((m^2)*g*l^2)/d;
-c3 = -m*l*b/d;
-c4 = m*g*l*(M+m)/d;
-c5 = (I+m*l^2)/d;
-c6 = m*l/d;
-c7 = -c*(M+m)/d;
+c3 = c*m*l/d;
+c4 = m*l*b/d;
+c5 = -m*g*l*(M+m)/d;
+c6 = -c*(M+m)/d;
+c7 = (I+m*l^2)/d;
+c8 = -m*l/d;
 
 Ac = [0 1 0 0;
-      0 c1 c2 0;
+      0 c1 c2 c3;
       0 0 0 1;
-      0 c3 c4 c7];
-Bc = [0 c5 0 c6]';
+      0 c4 c5 c6];
+Bc = [0 c7 0 c8]';
 Cc = eye(4);
 Dc = zeros(4,1);
 
@@ -37,4 +39,4 @@ B = sys.B;
 Bw = B;
 
 %%
-% save('sysDyn.mat', 'A', 'B', 'Bw')
+save('sysDyn.mat', 'A', 'B', 'Bw')

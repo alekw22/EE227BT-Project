@@ -6,7 +6,7 @@ Aunc = [0 -0.1; -0.2 0];       % coefficients of random variable theta
 B = eye(2);
 N = 5;         % prediction horizon
 K = 19;        % number of scenarios
-T = 2500;        % number of closed loop time steps
+T = 2500;      % number of closed loop time steps
 x0 = [1 1]';   % initial condition
 sigma = 0.1;
 

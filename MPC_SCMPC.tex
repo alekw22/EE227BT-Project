@@ -1,0 +1,91 @@
+\documentclass[12 pt]{report}
+\usepackage{fullpage, amssymb, amsmath}
+
+% Title Page
+\title{Using Convex Optimization to Control Linear Systems with Disturbances}
+\author{Oladapo Afolabi, Sarah Seko, Alek Williams}
+\date{December 4, 2015}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\end{abstract}
+
+\section{Model Predictive Control}
+
+Model Predictive Control (MPC) is a suboptimal control scheme for approximating the solution of an optimal control problem using a receding horizon approach. An optimal control problem uses a model of the plant to predict its behavior and solve for the optimal control policy. Suppose that the system of interest evolves according to the discrete time dynamics $x_{t+1} = f(x_t, u_t)$ and the initial state of the system, $\bar{x}_0$, is known. The system is restricted such that the state must be contained in the set $\mathcal{X}$ at all time steps. Additionally, the input to the system is also limited to be in the set $\mathcal{U}$. A stage cost, $\ell (x_t, u_t)$ is defined as a function of the current state and input. We would like to find the optimal control policy, $\psi(\cdot)$, which takes as its argument the current state of the system and returns the input, with respect to the stage cost while respecting the state and input constraints. The optimal control problem is given below.
+
+\begin{equation*}
+\begin{aligned}
+& \min_{\psi(\cdot)} & & \sum_{t = 0}^{T-1} \ell (x_t, u_t) \\
+& \text{subject to} & & x_0 = \bar{x}_0 \\
+& & & x_{t+1} = f(x_t, u_t); ~ \forall t = 0, \dots, T-1 \\
+& & & x_t \in \mathcal{X}; ~ \forall t = 1, \dots, T \\
+& & & u_t \in \mathcal{U}; ~ \forall t = 0, \dots, T-1 \\
+& & & u_t = \psi (x_t); ~ \forall t = 0, \dots, T-1
+\end{aligned}
+\end{equation*}
+
+The system dynamics can be substituted to eliminate the predicted state of the system so the only optimization variable is the control policy. The optimal control problem is in general intractable because it is an infinite dimensional optimization problem over the set of all functions. The time period of interest may also be prohibitively long, even infinite. In order to solve the problem, the objective function is minimized over the open-loop inputs instead of all control policies. A receding horizon approach is also adopted, where the problem is solved for a shorter horizon $N$, called the prediction horizon, instead of the whole horizon $T$ before shifting the prediction horizon and solving the problem again. To close the loop with the plant, the measured state at each time step is used as the initial condition of the optimization problem, which is given below.
+
+\begin{equation*}
+\begin{aligned}
+& \min_{u_{0|t}, \dots, u_{N-1|t}} & & \sum_{i = 0}^{N-1} \ell (x_{i|t}, u_{i|t}) \\
+& \text{subject to} & & x_{0|t} = x_t \\
+& & & x_{i+l|t} = f(x_{i|t}, u_{i|t}); ~ \forall i = 0, \dots, N-1 \\
+& & & x_{i|t} \in \mathcal{X}; ~ \forall i = 1, \dots, N \\
+& & & u_{i|t} \in \mathcal{U}; ~ \forall i = 0, \dots, N-1 \\
+\end{aligned}
+\end{equation*}
+
+The notation $\cdot_{i|t}$ is used to indicate a predicted quantity that is $i$ steps into the future given that the current time step is $t$. Again, the system dynamics can be substituted to eliminate the state variables, leaving the open-loop inputs as the only optimization variables. If the system evolves with linear dynamics then the equality constraints are all affine. If the sets $\mathcal{X}$ and $\mathcal{U}$ are convex and the stage cost is a jointly convex function of the state and input then the problem is convex.
+
+Now consider the case where the system dynamics are linear but subject to stochastic disturbances of known distribution. $$ x_{t+1} = Ax_t + Bu_t + w_t $$ The predicted states are now random variables making it meaningless to optimize over the sum of stage costs or enforce constraints. Instead, the stage costs must be replaced by their expected values. This can also be used on the constraints, specifying that the expected value of the states must be contained in $\mathcal{X}$. Alternatively, the probability that the state lies within $\mathcal{X}$ can be constrained to be greater $1 - \epsilon$, where $\epsilon$ is a small number, called the violation level. The stochastic problem is shown below with these so-called chance constraints.
+
+\begin{equation*}
+\begin{aligned}
+& \min_{u_{0|t}, \dots, u_{N-1|t}} & & \sum_{i = 0}^{N-1} \mathbb{E} \left[ \ell (x_{i|t}, u_{i|t}) \right] \\
+& \text{subject to} & & x_{0|t} = x_t \\
+& & & x_{i+l|t} = Ax_{i|t} + Bu_{i|t} + w_{t+i}; ~ \forall i = 0, \dots, N-1 \\
+& & & \mathrm{Pr} \left\{ x_{i|t} \in \mathcal{X}  \right\} \geq 1 - \epsilon; ~ \forall i = 1, \dots, N \\
+& & & u_{i|t} \in \mathcal{U}; ~ \forall i = 0, \dots, N-1 \\
+\end{aligned}
+\end{equation*}
+
+The stochastic problem is in general nonconvex and intractable but there exist computationally feasible convex formulations to approximate the problem, two of which were selected to be studied and are discussed in this report.
+
+\section{Scenario MPC}
+
+In Scenario MPC (SCMPC), the stochastic problem is approximated by a deterministic one by taking samples of the disturbance. Together with the predicted inputs, a set of samples for each step in the prediction horizon $w_t^{(k)} = \{w_{0|t}^{(k)}, \dots, w_{N-1|t}^{(k)} \} $, called a scenario, generates a state trajectory. The notation $\cdot_{i|t}$ is again used to indicate that these are predicted values and not the realizations of the disturbance that will occur in the actual system. The expected value in the cost function of the stochastic problem is approximated by the average of the cost functions for each trajectory, the same as optimizing over the sum of the cost functions. The predicted input sequence, $u_{0|t}, \dots, u_{N-1|t}$, is required to be feasible with respect to the state constraints on each trajectory created by the scenarios. The SCMPC problem, which is convex under the same conditions given for the general MPC problem, is given below.
+
+\begin{equation*}
+\begin{aligned}
+& \min_{u_{0|t}, \dots, u_{N-1|t}} & & \sum_{k = 1}^{K} \sum_{i = 0}^{N-1} \ell (x_{i|t}^{(k)}, u_{i|t}) \\
+& \text{subject to} & & x_{0|t}^{(k)} = x_t; ~ \forall k = 1,\dots,K \\
+& & & x_{i+l|t}^{(k)} = Ax_{i|t}^{(k)} + Bu_{i|t} + w_{i|t}^{(k)}; ~ \forall i = 0, \dots, N-1, ~k = 1,\dots,K \\
+& & & x_{i|t}^{(k)} \in \mathcal{X}; ~ \forall i = 1, \dots, N, ~k = 1,\dots,K \\
+& & & u_{i|t} \in \mathcal{U}; ~ \forall i = 0, \dots, N-1 \\
+\end{aligned}
+\end{equation*}
+
+The number of sampled scenarios, $K$, is called the sample complexity and must be chosen so that the chance constraints are satisfied. A sample complexity that guarantees satisfaction of the chance constraints is called admissible. Intuitively, as more scenarios are used, the violation probability of the system will decrease because the solution of the SCMPC problem will be robust with respect to more realizations of the disturbance. The computational complexity of the problem, however, grows with the number of scenarios. Although the number of decision variables remains the same, the number of constraints grows linearly with the number of scenarios. The goal is then to find the smallest admissible $K$, which would satisfy the chance constraints with the minimal possible computation.
+
+The required sample complexity is related to a property of the chance constraint called the support rank. The support rank is a property of an individual chance constraint so each chance constraint can be considered separately and for possibly different desired violation levels. Let $\mathcal{L}_i$ denote the unconstrained subspace of the $i$-th step constraint, $i \in \{0,\dots,N-1\}$, which is the largest subspace of the search space $\mathbb{R}^{Nm}$ that is unconstrained by all scenarios, almost surely. Then the support rank, $\rho_i$ is the co-dimension of $\mathcal{L}_i$. $$ \rho_i := Nm - \dim \mathcal{L}_i$$
+Consider, for example, a single linear inequality constraint on the predicted state, $ g^\top x_{i|t} \leq h$, where $h \in \mathbb{R}$. Substituting the linear stochastic dynamics of the system for the predicted state creates the inequality constraint on the decision variables, the open-loop inputs.
+\begin{displaymath}
+\begin{bmatrix}
+\tilde{g}_{0}^\top & \dots & \tilde{g}_{i-1}^\top & 0 & \dots & 0 
+\end{bmatrix}
+\begin{bmatrix}
+u_{0|t} \\ \vdots \\ u_{N-1|t}
+\end{bmatrix} + \tilde{h} \leq h
+\end{displaymath}
+The vectors $\tilde{g}_i$ are deterministic functions of $g$ and the system matrices $A$ and $B$. The zeros are included to show that the predicted state $x_{i|t}$ is only a function of the open-loop inputs up to time $i-1$. The scalar $\tilde{h}$ is a random variable that is a function of the stochastic disturbances. Therefore, no matter the values of the scenarios generated, the hyperplane created by the constraint will always be parallel to the hyperplane in the deterministic case. Any subspace that is parallel to these hyperplanes will be unconstrained by the constraints and so the support rank of the linear inequality constraint is $\rho_i = 1$.
+The first step violation probability, $V_t|x_t$ is the probability that the first predicted state, $x_{1|t}$ will fall outside of the set $\mathcal{X}$ given that initial state $x_{0|t} = x|t$. $$V_t|x_t = \mathrm{P}\left( Ax_{0|t} + Bu_{0|t} + w_{t} | x_{0|t} = x_t \right) $$
+The expected value of the first step violation probability can be bounded above by a function of the support rank of the first time step state constraint and the sample complexity. $$ \mathbb{E} \left[ V_t|x_t \right] \leq \frac{\rho_1}{K+1} $$
+The desired sample complexity is then given by the smallest $K$ that satisfies $ \frac{\rho_1}{K+1} \leq \epsilon $.
+
+
+
+\end{document}          
