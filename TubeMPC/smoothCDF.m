@@ -17,6 +17,7 @@ cvx_begin quiet
     minimize(objfun)     % curve fit and promote smoothness
     subject to
     0 <= CDFs <= 1                 % must be a probability
+    CDFs(1) == CDF(1);
         for k = 1:rho
             CDFs(k) <= CDFs(k+1);  % monotonic non-decreasing
         end
