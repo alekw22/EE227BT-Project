@@ -1,0 +1,21 @@
+\begin{thebibliography}{1}
+
+\bibitem{MPCbook}
+F.~Borrelli, A.~Bemporad, and M.~Morari.
+\newblock Predictive control for linear and hybrid systems.
+\newblock online resource, March 2014.
+\newblock http://www.mpc.berkeley.edu/mpc-course-material.
+
+\bibitem{schildbach14}
+G.~Schildbach, L.~Fagiano, C.~Frei, and M.~Morari.
+\newblock The scenario approach for stochastic model predictive control with
+  bounds on closed-loop constraint violations.
+\newblock {\em Automatica}, 50:3009--3018, 2014.
+
+\bibitem{schildbach13}
+G.~Schildbach, L.~Fagiano, and M.~Morari.
+\newblock Randomized solutions to convex programs with multiple chance
+  constraints.
+\newblock {\em SIAM J. Optim.}, 23(4):2479--2501, 2013.
+
+\end{thebibliography}

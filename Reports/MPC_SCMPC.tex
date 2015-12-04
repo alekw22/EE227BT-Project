@@ -14,7 +14,7 @@
 
 \section{Model Predictive Control}
 
-Model Predictive Control (MPC) is a suboptimal control scheme for approximating the solution of an optimal control problem using a receding horizon approach. An optimal control problem uses a model of the plant to predict its behavior and solve for the optimal control policy. Suppose that the system of interest evolves according to the discrete time dynamics $x_{t+1} = f(x_t, u_t)$ and the initial state of the system, $\bar{x}_0$, is known. The system is restricted such that the state must be contained in the set $\mathcal{X}$ at all time steps. Additionally, the input to the system is also limited to be in the set $\mathcal{U}$. A stage cost, $\ell (x_t, u_t)$ is defined as a function of the current state and input. We would like to find the optimal control policy, $\psi(\cdot)$, which takes as its argument the current state of the system and returns the input, with respect to the stage cost while respecting the state and input constraints. The optimal control problem is given below.
+Model Predictive Control (MPC) is a suboptimal control scheme for approximating the solution of an optimal control problem using a receding horizon approach \cite{MPCbook}. An optimal control problem uses a model of the plant to predict its behavior and solve for the optimal control policy. Suppose that the system of interest evolves according to the discrete time dynamics $x_{t+1} = f(x_t, u_t)$ and the initial state of the system, $\bar{x}_0$, is known. The system is restricted such that the state must be contained in the set $\mathcal{X}$ at all time steps. Additionally, the input to the system is also limited to be in the set $\mathcal{U}$. A stage cost, $\ell (x_t, u_t)$ is defined as a function of the current state and input. We would like to find the optimal control policy, $\psi(\cdot)$, which takes as its argument the current state of the system and returns the input, with respect to the stage cost while respecting the state and input constraints. The optimal control problem is given below \cite{schildbach14}.
 
 \begin{equation*}
 \begin{aligned}
@@ -57,7 +57,7 @@ The stochastic problem is in general nonconvex and intractable but there exist c
 
 \section{Scenario MPC}
 
-In Scenario MPC (SCMPC), the stochastic problem is approximated by a deterministic one by taking samples of the disturbance. Together with the predicted inputs, a set of samples for each step in the prediction horizon $w_t^{(k)} = \{w_{0|t}^{(k)}, \dots, w_{N-1|t}^{(k)} \} $, called a scenario, generates a state trajectory. The notation $\cdot_{i|t}$ is again used to indicate that these are predicted values and not the realizations of the disturbance that will occur in the actual system. The expected value in the cost function of the stochastic problem is approximated by the average of the cost functions for each trajectory, the same as optimizing over the sum of the cost functions. The predicted input sequence, $u_{0|t}, \dots, u_{N-1|t}$, is required to be feasible with respect to the state constraints on each trajectory created by the scenarios. The SCMPC problem, which is convex under the same conditions given for the general MPC problem, is given below.
+In Scenario MPC (SCMPC), the stochastic problem is approximated by a deterministic one by taking samples of the disturbance \cite{schildbach14}. Together with the predicted inputs, a set of samples for each step in the prediction horizon $w_t^{(k)} = \{w_{0|t}^{(k)}, \dots, w_{N-1|t}^{(k)} \} $, called a scenario, generates a state trajectory. The notation $\cdot_{i|t}$ is again used to indicate that these are predicted values and not the realizations of the disturbance that will occur in the actual system. The expected value in the cost function of the stochastic problem is approximated by the average of the cost functions for each trajectory, the same as optimizing over the sum of the cost functions. The predicted input sequence, $u_{0|t}, \dots, u_{N-1|t}$, is required to be feasible with respect to the state constraints on each trajectory created by the scenarios. The SCMPC problem, which is convex under the same conditions given for the general MPC problem, is given below.
 
 \begin{equation*}
 \begin{aligned}
@@ -81,10 +81,10 @@ Consider, for example, a single linear inequality constraint on the predicted st
 u_{0|t} \\ \vdots \\ u_{N-1|t}
 \end{bmatrix} + \tilde{h} \leq h
 \end{displaymath}
-The vectors $\tilde{g}_i$ are deterministic functions of $g$ and the system matrices $A$ and $B$. The zeros are included to show that the predicted state $x_{i|t}$ is only a function of the open-loop inputs up to time $i-1$. The scalar $\tilde{h}$ is a random variable that is a function of the stochastic disturbances. Therefore, no matter the values of the scenarios generated, the hyperplane created by the constraint will always be parallel to the hyperplane in the deterministic case. Any subspace that is parallel to these hyperplanes will be unconstrained by the constraints and so the support rank of the linear inequality constraint is $\rho_i = 1$.
+The vectors $\tilde{g}_i$ are deterministic functions of $g$ and the system matrices $A$ and $B$. The zeros are included to show that the predicted state $x_{i|t}$ is only a function of the open-loop inputs up to time $i-1$. The scalar $\tilde{h}$ is a random variable that is a function of the stochastic disturbances. Therefore, no matter the values of the scenarios generated, the hyperplane created by the constraint will always be parallel to the hyperplane in the deterministic case. Any subspace that is parallel to these hyperplanes will be unconstrained by the constraints and so the support rank of the linear inequality constraint is $\rho_i = 1$ \cite{schildbach13}.
 The first step violation probability, $V_t|x_t$ is the probability that the first predicted state, $x_{1|t}$ will fall outside of the set $\mathcal{X}$ given that initial state $x_{0|t} = x|t$. $$V_t|x_t = \mathrm{P}\left( Ax_{0|t} + Bu_{0|t} + w_{t} | x_{0|t} = x_t \right) $$
 The expected value of the first step violation probability can be bounded above by a function of the support rank of the first time step state constraint and the sample complexity. $$ \mathbb{E} \left[ V_t|x_t \right] \leq \frac{\rho_1}{K+1} $$
-The desired sample complexity is then given by the smallest $K$ that satisfies $ \frac{\rho_1}{K+1} \leq \epsilon $.
+The desired sample complexity is then given by the smallest $K$ that satisfies $ \frac{\rho_1}{K+1} \leq \epsilon $ \cite{schildbach14}.
 
 \section{Tube Scalings}
 
@@ -178,23 +178,51 @@ In this example, there is only a single linear inequality constraint on the stat
 
 \section{Example: Cart-Pendulum system}
 
-The three control techniques were then applied to the system of a pendulum hanging from a cart, shown in Figure \ref{fig:cart-pendulum}. The system was adapted from ****** SOURCE ****** so that rotational damping was included and the system was linearized about the stable equilbrium point. The four states of the system are the cart position and velocity and pendulum angle and angular velocity. The system dynamics are given below.
-
-
-
-\begin
-
 \begin{figure}
 	\includegraphics[width=\linewidth]{cart-pendulum.jpg}
 	\caption{An image showing the coordinate systems of the cart and pendulum system.}
 	\label{fig:cart-pendulum}
 \end{figure}
 
+The three control techniques were then applied to the system of a pendulum hanging from a cart, shown in Figure \ref{fig:cart-pendulum}. The system was adapted from ****** SOURCE ****** so that rotational damping was included and the system was linearized about the stable equilbrium point. The four states of the system are the cart position, $x$, and velocity, $\dot{x}$, and pendulum angle, $\theta$, and angular velocity, $\dot{\theta}$. The input to the system is the force pushing on the cart and the disturbance to the system acts in this channel. The nonlinear system dynamics are given below, where $I$ is the moment of inertia of the pendulum, $m$ is the mass of the pendulum, $l$ is half the length of the pendulum, $c$ is the rotational damping coefficient, $M$ is the mass of the cart, and $b$ is the linear damping coefficient.
+\begin{align*}
+(I+ml^2)\ddot{\theta} + c \dot{\theta} + mgl \sin \theta &= -ml \ddot{x} \cos \theta \\
+(M+m)\ddot{x} + b\dot{x} + ml \ddot{\theta} &= F
+\end{align*}
+
+Using the small angle approximation and neglecting squared terms, the following linearized continuous time state space system is obtained, where $d = I(M+m) + Mml^2$, which include the disturbance $w$. It is assumed that full state feedback is available. Matlab was then used to find the discrete time state space system using zero order hold on the input and a discretization time $T = 0.05$ seconds.
+
+\begin{equation*}
+\begin{bmatrix}
+\dot{x} \\ \ddot{x} \\ \dot{\theta} \\ \ddot{\theta}
+\end{bmatrix} = 
+\begin{bmatrix}
+0 & 1 & 0 & 0 \\
+0 & \frac{-b(I + ml^2)}{d} & \frac{m^2gl^2}{d} & \frac{cml}{d} \\
+0 & 0 & 0 & 1 \\
+0 & \frac{bml}{d} & \frac{-mgl(M+m)}{d} & \frac{-c(M+m)}{d}
+\end{bmatrix}
+\begin{bmatrix}
+x \\ \dot{x} \\ \theta \\ \dot{\theta}
+\end{bmatrix} + 
+\begin{bmatrix}
+0 \\ \frac{I+ml^2}{d} \\ 0 \\ \frac{-ml}{d}
+\end{bmatrix} (u + w)
+\end{equation*}
+
+The goal was to drive the system to the origin with minimal control effort and without swaying the pendulum too much. A quadratic cost function was used that penalized cart positions and pendulum angles away from zero and control input. Chance constraints were specified such that the pendulum angle magnitude should not exceed 0.1 radians more than 20\% of the time. $$ \mathrm{Pr}(|\theta_t| \leq 0.1) \geq 0.8$$ A prediction horizon of $N = 6$ time steps was used. The disturbance was modeled as a uniform random variable, $w \sim U[-w_{max}, w_{max}]$, where $w_{max} = 0.15$.
+
+When considering the chance constraints for the scenario MPC implementation, the two constraints $\theta_t \leq 0.1$ and $\theta_t \geq -0.1$ were considered jointly. Although there are two linear inequality constraints, their dividing hyperplanes are parallel to each other so the support rank is still $\rho = 1$. Therefore, the necessary sample complexity is $K = 4$.
+
+The disturbance $w$ is a uniform scalar random variable so $\alpha = w^2$ has a density function given by $$ f_\alpha (x) = \begin{cases}
+\frac{1}{2w_{max}\sqrt{x}} & 0 \leq x \leq w_{max}^2 \\
+0 &	\mathrm{otherwise}
+\end{cases} $$
+This density function was used to find the tube scalings for the tube MPC implementation. To avoid evaluating $f_\alpha$ at zero, where it is infinite, a midpoint Riemann sum was used for numerical integration instead of the trapezoid rule.
 
 
 
-
-
-
+\bibliographystyle{plain}
+\bibliography{sources}
 
 \end{document}          
