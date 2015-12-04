@@ -1,3 +1,5 @@
+% Run scenario MPC on the example from Schildbach et al (2014) but with
+% only additive disturbances. Run many short simulations.
 clear
 
 %% Problem setup

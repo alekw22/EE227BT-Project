@@ -1,4 +1,5 @@
-% Do scenario MPC on the cart pendulum system
+% Do scenario MPC on the cart pendulum system with a desired position that
+% is not the origin
 clear all
 
 %% Setup

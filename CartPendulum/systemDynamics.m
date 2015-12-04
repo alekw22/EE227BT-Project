@@ -1,15 +1,15 @@
-% Discrete time system dynamics
+% Discrete time dynamics of a pendulum attached to a cart
 clear
 
 % System Parameters
 M = 0.5;       % mass of cart [kg]
 m = 0.2;       % mass of the pendulum [kg]
 b = 0.1;       % cart coefficient of friction [N/m/s]
-c = 0.01;         % pendulum coefficient of friction
+c = 0.01;      % pendulum coefficient of friction [N.m.s]
 I = 0.006;     % pendulum moment of inertia [kg.m/s^2]
 g = 9.8;       % acceleration of gravity [m/s^2]
-l = 0.3;       % length of pendulum
-T = 0.05;      % discretization time
+l = 0.3;       % length of pendulum [m]
+T = 0.05;      % discretization time [s]
 
 % Continuous time dynamics
 d = I*(M+m) + M*m*l^2;
@@ -32,11 +32,11 @@ Dc = zeros(4,1);
 
 ctSys = ss(Ac,Bc,Cc,Dc);
 
-% Discrete time dynamics
+% Discrete time dynamics, calculated using zero order hold
 sys = c2d(ctSys, T, 'zoh');
 A = sys.A;
 B = sys.B;
 Bw = B;
 
 %%
-save('sysDyn.mat', 'A', 'B', 'Bw')
+% save('sysDyn.mat', 'A', 'B', 'Bw')

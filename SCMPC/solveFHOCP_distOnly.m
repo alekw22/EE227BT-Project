@@ -1,6 +1,7 @@
 function u = solveFHOCP_distOnly(x0, omega1, omega2)
 % Solve the finite horizon optimal control problem (FHOCP) in the numerical
-% example from Schildbach et al (2014) with only the additive disturbance
+% example from Schildbach et al (2014) with only the additive disturbance.
+% Treat the two state constraints individually.
 %
 % x0: initial condition
 % omega: sampled uncertainty for additive disturbance (2 x N x K1+K2)

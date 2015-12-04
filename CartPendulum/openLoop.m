@@ -1,4 +1,4 @@
-% Open loop simulation to check that the dynamics are correct
+% Open loop simulation to check that the dynamics make sense
 clear
 load('sysDyn.mat')
 
@@ -23,8 +23,8 @@ ylabel('\theta')
 xlabel('Time')
 
 %% Simulate system subject to disturbances
-K = 50;
-T = 20;
+K = 50;   % number of systems
+T = 20;   % number of time steps
 x0 = [0 0 0 0]';
 x = zeros(4,T+1,K);
 x(:,1,:) = repmat(x0, 1, K);

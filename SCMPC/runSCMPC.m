@@ -1,3 +1,5 @@
+% Run scenario MPC on the example from Schildbach et al (2014) that has
+% both additive and multiplicative disturbances
 clear
 
 %% Problem setup

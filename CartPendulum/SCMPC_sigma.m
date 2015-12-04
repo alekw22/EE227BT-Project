@@ -1,4 +1,5 @@
-% Do scenario MPC on the cart pendulum system
+% Do scenario MPC on the cart pendulum system for various disturbance
+% levels
 clear all
 
 %% Setup

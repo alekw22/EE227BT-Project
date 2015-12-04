@@ -1,3 +1,5 @@
+% Solve a single step of the SCMPC example problem from Schildbach et al.
+% (2014). Plot all of the open loop trajectories for each sampled scenario.
 clear
 
 %% Sample uncertainty

@@ -1,5 +1,5 @@
 % Run scenario MPC on the example from Cannon et al (2010) on stochastic
-% tube MPC
+% tube MPC. Run many short simulations.
 clear
 
 %% Problem setup
@@ -7,10 +7,10 @@ A = [1.6 1.1; -0.7 1.2];
 B = [1 1]';
 g = [1 0.2]';
 h = 1.2;
-N = 6;         % prediction horizon
-K = 4;         % number of scenarios
-T = 5;         % number of closed loop time steps
-M = 200;        % number of closed loop simulations to run
+N = 6;           % prediction horizon
+K = 4;           % number of scenarios
+T = 5;           % number of closed loop time steps
+M = 200;         % number of closed loop simulations to run
 x0 = [-5 60]';   % initial condition
 sigma = 1/12;
 
@@ -36,14 +36,33 @@ for m = 1:M
 end
 
 %% Plot output
-figure; hold on
+figure
+subplot(121)
+hold on
 for m = 1:M
-    plot(squeeze(xCL(1,:,m)), squeeze(xCL(2,:,m)), 'o-')
+    plot(squeeze(xCL(1,:,m)), squeeze(xCL(2,:,m)))
 end
 x1 = linspace(-5, 2, 50);
 x2 = 6 - 5*x1;
-plot(x1, x2, 'r--')
-xlabel('x1'); ylabel('x2'); title('Closed loop trajectories')
+plot(x1, x2, 'k')
+xlim([-5 2])
+xlabel('x1')
+ylabel('x2')
+title('Closed loop trajectories')
+
+subplot(122)
+hold on
+for m = 1:M
+    plot(squeeze(xCL(1,:,m)), squeeze(xCL(2,:,m)), '.')
+end
+x1 = linspace(-5, 2, 50);
+x2 = 6 - 5*x1;
+plot(x1, x2, 'k')
+xlim([-2.5 -1.5])
+ylim([13 19])
+xlabel('x1')
+ylabel('x2')
+title('Close up: First step')
 
 %% Analyze results
 % violations
@@ -63,4 +82,4 @@ Vemp = numViols/M    % empirical violation rate
 % Cstd = std(Cvect)    % std. deviation of closed loop stage cost
 
 %% Save
-save('data200_tubeEx.mat')
+% save('data200_tubeEx.mat')

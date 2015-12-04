@@ -1,5 +1,5 @@
 function val = f_alpha(x, wmax)
-% density of a square uniform variable distributed between [-wmax, wmax]
+% density of a squared uniform variable distributed between [-wmax, wmax]
 
 val = zeros(size(x));
 

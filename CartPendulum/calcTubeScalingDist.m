@@ -1,8 +1,8 @@
-% Tube scaling distributions for cart-pendulum system
+% Calculate tube scaling distributions for cart-pendulum system
 clear
 
 %% problem data
-wmax = 0.15;
+wmax = 0.15;                         % maximum disturbance magnitude
 alpha_bar = wmax^2;
 lambda = 0.9366;                   
 beta_bar = alpha_bar/(1-lambda);     % maximum error tube scaling
@@ -24,7 +24,7 @@ end
 advanceCDF = @(pi,mu) P*[pi; ones(omega,1)];
 mu = 100;
 
-%%
+%% Calculate the distribution approximations given beta_0 = 0
 n = 15;
 x = linspace(0,beta_bar,rho+1);
 piU = cell(n);         % cell array of CDFs
@@ -39,7 +39,7 @@ for k = 1:(n-1)
     piS{k+1,1} = smoothCDF(piU{k+1,1}, mu);
 end
 
-%%
+%% Plot all pi_i|0
 figure
 plot(x, pi0)
 hold on
@@ -47,7 +47,7 @@ for k = 1:n
     plot(x, piS{k,1})
 end
 
-%% find b_bar
+%% Find b_bar, the maximum tube scalings at each time step
 p = 0.8;
 q = 2*p - 1;
 

@@ -1,6 +1,7 @@
 function [u, x] = solveFHOCP(x0, theta, omega)
 % Solve the finite horizon optimal control problem (FHOCP) in the numerical
-% example from Schildbach et al (2014). 
+% example from Schildbach et al (2014). Treat the state constraints
+% jointly.
 %
 % x0: initial condition
 % theta: sampled uncertainty for multiplicative disturbance (N x K)

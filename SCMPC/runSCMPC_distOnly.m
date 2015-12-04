@@ -1,3 +1,5 @@
+% Run scenario MPC on the example from Schildbach et al (2014) but with
+% only additive disturbances. Run one long simulation.
 clear
 
 %% Problem setup
@@ -37,9 +39,8 @@ plot(xCL(1,:), xCL(2,:), '.')
 xlim([0 4])
 ylim([0 4])
 plot([1 1], ylim, 'k')
-hold on
 plot(xlim, [1 1], 'k')
-% xlabel('x1'); ylabel('x2'); title('Closed loop trajectory')
+xlabel('x1'); ylabel('x2'); title('SCMPC: Closed loop trajectory')
 
 %% Constraint violations
 viol = xCL < 1;

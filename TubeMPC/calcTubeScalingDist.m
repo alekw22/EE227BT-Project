@@ -1,5 +1,5 @@
-% Replicate the results of Cannon et al. (2010), more specifically the tube
-% scaling distributions
+% Calculate the tube scaling distributions for the example of Cannon et al.
+% (2010)
 clear
 
 %% problem data
@@ -33,11 +33,10 @@ load('matrixP_padded.mat')
 % end
 % P(end,end) = 1;
 
-% advanceCDF = @(pi,mu) smoothCDF(P*[pi; ones(omega,1)],mu);
 advanceCDF = @(pi,mu) P*[pi; ones(omega,1)];
 mu = 100;
 
-%%
+%% Calculate the distribution approximations given beta_0 = 0
 n = 8;
 x = linspace(0,beta_bar,rho+1);
 piU = cell(n);         % cell array of CDFs
@@ -52,7 +51,7 @@ for k = 1:(n-1)
     piS{k+1,1} = smoothCDF(piU{k+1,1}, mu);
 end
 
-%%
+%% Plot all pi_i|0
 figure
 plot(x, pi0)
 hold on
@@ -60,7 +59,7 @@ for k = 1:n
     plot(x, piS{k,1})
 end
 
-%% find b_bar
+%% Find b_bar, the maximum tube scalings at each time step
 p = 0.8;
 q = 2*p - 1;
 

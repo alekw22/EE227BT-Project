@@ -34,7 +34,7 @@ P(end,end) = 1;
 
 advanceCDF = @(pi) smoothCDF(P*[pi; ones(omega,1)]);
 
-%%
+%% Calculate the distribution approximations given beta_0 = 0
 n = 8;
 x = linspace(0,beta_bar,rho+1);
 pi = cell(n);
@@ -46,7 +46,7 @@ for k = 1:(n-1)
     pi{k+1,1} = advanceCDF(pi{k,1});
 end
 
-%%
+%% Plot all pi_i|0
 figure
 plot(x, pi0)
 hold on
@@ -54,7 +54,7 @@ for k = 1:n
     plot(x, pi{k,1})
 end
 
-%% find b_bar
+%% Find b_bar, the maximum tube scalings at each time step
 p = 0.9;
 q = 2*p - 1;
 
