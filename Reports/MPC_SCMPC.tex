@@ -157,7 +157,7 @@ The two state constraints were considered individually and the desired violation
 \end{align*}
 In each case, the chance constraints are single linear inequalities so they both have a support rank of $\rho = 1$. Therefore, the minimal sample complexities required to achieve the desired violation levels are $K_1 = K_2 = 9$.
 
-The system was simulated for 3000 closed loop time steps. The number of constraint violations was 296 for $x_1$ and 300 for $x_2$ giving empirical violation levels of 9.87\% and 10\%, respectively.
+The system was simulated for 3000 closed loop time steps, as shown in Figure \ref{fig:SCMPC_3000}. The number of constraint violations was 296 for $x_1$ and 300 for $x_2$ giving empirical violation levels of 9.87\% and 10\%, respectively.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{SCMPC_3000.jpg}
@@ -165,7 +165,32 @@ The system was simulated for 3000 closed loop time steps. The number of constrai
 	\label{fig:SCMPC_3000}
 \end{figure}
 
-Figure \ref{fig:SCMPC_3000} shows a boat.
+
+\section{Example 1 (from Cannon et al. 2010)}
+
+In this example, there is only a single linear inequality constraint on the state. The constraint has a support rank $\rho = 1$ so the necessary sample complexity to achieve the specified violation level of $\epsilon = 0.2$ is $K = 4$. The simulation was run for 200 systems for 6 closed loop time steps, each time using CVX to solve the scenario MPC problem with 4 scenarios. The system trajectories are shown in Figure \ref{fig:SCMPC_200x6}. The empirical constraint violations were 21\% for $t = 1$ and 0\% for all other time steps.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{SCMPC_200x6.jpg}
+	\caption{The closed loop system trajectory using the scenario MPC controller is plotted on the left for 200 simulated systems, each for 6 time steps. A close up of the state after one time step, which has some constraint violations, is shown on the right. The state constraint is plotted as a solid black line.}
+	\label{fig:SCMPC_200x6}
+\end{figure}
+
+\section{Example: Cart-Pendulum system}
+
+The three control techniques were then applied to the system of a pendulum hanging from a cart, shown in Figure \ref{fig:cart-pendulum}. The system was adapted from ****** SOURCE ****** so that rotational damping was included and the system was linearized about the stable equilbrium point. The four states of the system are the cart position and velocity and pendulum angle and angular velocity. The system dynamics are given below.
+
+
+
+\begin
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{cart-pendulum.jpg}
+	\caption{An image showing the coordinate systems of the cart and pendulum system.}
+	\label{fig:cart-pendulum}
+\end{figure}
+
+
 
 
 

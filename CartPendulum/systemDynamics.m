@@ -8,7 +8,7 @@ b = 0.1;       % cart coefficient of friction [N/m/s]
 c = 0.01;      % pendulum coefficient of friction [N.m.s]
 I = 0.006;     % pendulum moment of inertia [kg.m/s^2]
 g = 9.8;       % acceleration of gravity [m/s^2]
-l = 0.3;       % length of pendulum [m]
+l = 0.3;       % half length of pendulum [m]
 T = 0.05;      % discretization time [s]
 
 % Continuous time dynamics
