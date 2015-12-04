@@ -23,12 +23,12 @@ ylabel('\theta')
 xlabel('Time')
 
 %% Simulate system subject to disturbances
-K = 3;
-T = 500;
+K = 50;
+T = 20;
 x0 = [0 0 0 0]';
 x = zeros(4,T+1,K);
 x(:,1,:) = repmat(x0, 1, K);
-sigma = 0.05;
+sigma = 0.25;
 
 for t = 1:T
     for k = 1:K
