@@ -1,10 +1,9 @@
-% Replicate the results of Cannon et al. (2010), more specifically the tube
-% scaling distributions
+% Tube scaling distributions for cart-pendulum system
 clear
 
 %% problem data
-alpha_bar = 0.1;         % maximum disturbance tube scaling
-sigma = 1/12;            % standard deviation of disturbance
+sigma = 0.05;            % standard deviation of disturbance
+alpha_bar = (3*sigma)^2;         % maximum disturbance tube scaling
 lambda = 0.422;                   
 beta_bar = alpha_bar/(1-lambda);     % maximum error tube scaling
 rho = 1000;                          % number of discrete samples
@@ -12,28 +11,22 @@ h = beta_bar/rho;
 omega = ceil(beta_bar*(1-lambda)/(lambda*h));    % extra discrete samples to compute CDF
 
 %% density of disturbance scaling
-tail = 1 - chi2cdf(alpha_bar/(sigma^2),2);
+tail = 1 - chi2cdf(alpha_bar/(sigma^2),1);
 scale = 1/(1-tail);
-f_alpha = @(x) (x <= alpha_bar).*chi2pdf(x/(sigma^2),2)*scale/(sigma.^2);
-F_alpha = @(x) min([scale*chi2cdf(x/(sigma^2),2); ones(1,length(x))]);
+f_alpha = @(x) (x <= alpha_bar).*chi2pdf(x/(sigma^2),1)*scale/(sigma.^2);
+F_alpha = @(x) min([scale*chi2cdf(x/(sigma^2),1); ones(1,length(x))]);
 
 %% P matrix for advancing the distribution
-load('matrixP_padded.mat')
-% P = zeros(rho+1, rho+omega+1);
-% x = linspace(0, beta_bar/lambda, rho+omega+1);
-% for i = 1:rho
-%     i
-%     for j = 1:(rho+omega+1)
-%         if j > 1 && j < (rho+omega+1)
-%             P(i,j) = lambda*h*f_alpha(x(i) - lambda*x(j));
-%         else
-%             P(i,j) = lambda*(h/2)*f_alpha(x(i) - lambda*x(j));
-%         end
-%     end
-% end
-% P(end,end) = 1;
+% load('matrixP_pendulum.mat')
+P = zeros(rho+1, rho+omega+1);
+x = linspace(0, beta_bar/lambda, rho+omega+1);
+for i = 1:(rho+1)
+    i
+    for j = 2:(rho+omega+1)
+        P(i,j) = lambda*h*f_alpha(x(i) - lambda*x(j));
+    end
+end
 
-% advanceCDF = @(pi,mu) smoothCDF(P*[pi; ones(omega,1)],mu);
 advanceCDF = @(pi,mu) P*[pi; ones(omega,1)];
 mu = 100;
 

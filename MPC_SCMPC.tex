@@ -86,6 +86,55 @@ The first step violation probability, $V_t|x_t$ is the probability that the firs
 The expected value of the first step violation probability can be bounded above by a function of the support rank of the first time step state constraint and the sample complexity. $$ \mathbb{E} \left[ V_t|x_t \right] \leq \frac{\rho_1}{K+1} $$
 The desired sample complexity is then given by the smallest $K$ that satisfies $ \frac{\rho_1}{K+1} \leq \epsilon $.
 
+\section{Tube Scalings}
+
+A scaling random variable $\alpha_k$ is defined such that the disturbance $w_k$ lies in an ellipsoid parameterized by the random variable. $$w_k \in \mathcal{E}(W, \alpha_k) := \{w: w^\top Ww \leq \alpha\}$$ The random variable $\alpha_k$ is assumed to be bounded by $\bar{\alpha}$ and its cumulative distribution function, $F_\alpha$, is known in closed form or can be numerically integrated. For example, if each component of $w_k$ is an identically and independently distributed truncated Gaussian random variable and $W$ is the identity matrix, then $\alpha_k$ has a truncated $\chi^2$ distribution. 
+
+Scaling random variables $\beta_i$ are also defined such that the predicted deviations lie in ellipsoids parameterized by $\beta_i$. $$ e_{i|k} \in \mathcal{E}(V, \beta_i) := \{e : e^\top Ve \leq \beta_i\}  $$ So that the predicted deviations that are in the bounding ellipsoid at one time step are guaranteed to lie within the next bounding ellipsoid at the next time step, the scaling variables evolve according to $ \beta_{i+1} = \lambda \beta_i + \alpha_i $. For $\lambda \in (0,1)$, this implies that $\beta_{i+1}$ is bounded above by $\bar{\beta}_{i+1} = \lambda\bar{\beta}_i + \bar{\alpha} $ and the bounds themselves are bound by $\bar{\beta}_i \leq \bar{\beta} = \max \{ \bar{\beta}_0, \frac{\lambda}{1 - \lambda} \bar{\alpha}\}$. 
+
+Because $\beta_{i+1}$ is the sum of two random variables, its cumulative distribution function $F_{\beta_{i+1}}$ can be found by taking the scaled convolution of the cumulative distribution function of the previous scaling variable and the density function of $\alpha$. $$ F_{\beta_{i+1}}(x) = \lambda \int_{-\infty}^{\infty} F_{\beta_i}(y)f_\alpha (x-\lambda y)dy $$ The random variable $\beta_i$ is nonnegative so $F_{\beta_i}$ only has support on $[0, \infty)$. The random variable $\alpha_i$ is nonnegative and bounded so $f_\alpha$ only has support on $[0, \alpha]$. Thus the limits of the convolution integral are finite and given in the following equation. $$ F_{\beta_{i+1}}(x) = \lambda \int_{0}^{\bar{\beta}/\lambda} F_{\beta_i}(y)f_\alpha (x-\lambda y)dy $$
+
+A numerical integration scheme was employed to calculate approximations of the distributions of $\beta_i$, which are denoted by $\pi_i$. These vectors are the approximation of the cumulative distribution functions $F_{\beta_i}$ evaluated at $\rho+1$ equally spaced points between $0$ and $\bar{\beta}$. Let $x$ be the vector of evaluation points for $\pi_i$, meaning that $\pi_{i,j} \approx F_{\beta_i}(x_j)$. Let $h = x_{j+1} - x{j}$ be the distance between the evaluation points and $\omega$ the number of segments of length $h$ between $\bar{\beta}$ and $\bar{\beta}/\lambda$. Using the trapezoid rule for integration, a matrix P can be defined such that the next distribution can be found by  
+$$\pi_{i+1} = P \begin{bmatrix}
+\pi_i \\ \mathbf{1}_\omega
+\end{bmatrix} $$ where $\mathbf{1}_\omega$ is a vector of ones with length $\omega$.
+
+\begin{displaymath}
+	P = \frac{h}{2}\begin{bmatrix}
+		f_\alpha(x_0 - \lambda x_0) & 2f_\alpha(x_0 - \lambda x_1) & \dots & 2f_\alpha(x_0 - \lambda x_{\rho + \omega - 1}) & f_\alpha(x_0 - \lambda x_{\rho + \omega}) \\
+		f_\alpha(x_1 - \lambda x_0) & 2f_\alpha(x_1 - \lambda x_1) & \dots & 2f_\alpha(x_1 - \lambda x_{\rho + \omega - 1}) & f_\alpha(x_1 - \lambda x_{\rho + \omega}) \\
+		\vdots & \vdots & & \vdots & \vdots \\
+		f_\alpha(x_\rho - \lambda x_0) & 2f_\alpha(x_\rho - \lambda x_1) & \dots & 2f_\alpha(x_\rho - \lambda x_{\rho + \omega - 1}) & f_\alpha(x_\rho - \lambda x_{\rho + \omega}) \\
+	\end{bmatrix}
+\end{displaymath}
+
+ First, $\beta_0$ was assumed to be deterministically 0 so $\pi_0 = \mathbf{1}_{\rho + 1}$. The subsequent approximations of $F_{\beta_i}$ can be found by $\pi_i = P^i \pi_0$. However, the approximated distributions were not smooth because of the numerical integration and they did not satisfy the properties of a cumulative distribution, specifically that $\pi_i$ should be a nondecreasing sequence of numbers. To create better approximations of $F_{\beta_i}$, the following convex optimization problem was solved.
+ 
+\begin{equation*}
+\begin{aligned}
+& \min_{\hat{\pi}_i} & & \|\hat{\pi}_i - \pi_i \|_2^2 + \mu \sum_{j = 0}^{\rho} (\hat{\pi}_{i,j+1} - \hat{\pi}_{i,j})^2\\
+& \text{subject to} & & 0 \leq \hat{\pi}_{i,j} \leq 1; ~ \forall j = 0, \dots, \rho \\
+& & & \hat{\pi}_{i,j} \leq \hat{\pi}_{i,j+1}; ~ \forall j = 0, \dots, \rho -1 \\
+\end{aligned}
+\end{equation*}
+
+In the problem, $\pi_i$ is the one-step advance distribution obtained by multiplying the previous distribution with $P$. The decision variables $\hat{\pi}_i$ are a smoothed approximation of the distribution that satisfies the properties of a cumulative distribution function, which is enforced by the constraints of the problem. The parameter $\mu$ is used to balance the weight between approximating the unsmoothed distribution and the smoothness of new distribution. The value $\mu = 100$ was found to give good results. For the remainder of this report, the notation $\pi_i$ is used to refer to the smoothed distributions obtained by solving the above problem. When calculating a multiply step advance distribution, the distributions were smoothed in between each multiplication by $P$.
+
+For notation convenience, the following functions are defined.
+\begin{align*}
+\mathrm{ind}(\pi_i,p) &= \min\{j:\pi_{i,j} \geq p\} \\
+b(\pi_i,p) &= x_j, ~j = \mathrm{ind}(\pi_i, p)
+\end{align*}
+The function $\mathrm{ind}(\pi_i,p)$ is the index of the first element of the distribution $\pi_i$ to exceed the probability level $p$. The function $b(\pi_i,p)$ is the value of the element in input vector $x$ that corresponds to $\mathrm{ind}(\pi_i,p)$. This means that $F_{\beta_i}(b(\pi_i,p)) \approx p$ or alternatively  $\mathrm{Pr} \{\beta_i \geq b(\pi_i,p) \} \approx p$. It follows from these definitions that $e_{k+i} \in \mathcal{E}(V,b(\pi_i,p))$ with probability $p$.
+
+\section{Recursive Feasibility}
+To ensure recursive feasibility of the tube MPC problem, the constraints are tightened further based on the upper bound on $\beta_i$. Let $\pi_{i|j}, j < i$ be the approximated distribution of $\beta_i$ assuming that the value of $\beta_j$ is equal to its upper bound according to the distribution $\pi_{j|0}$. Using the previous notation, $\pi_i = \pi_{i|0}$ because $\beta_0$ is deterministic. Define $\pi_{i|i}$ to be the distribution such that elements before $\mathrm{ind}(\pi_i,1)$ are all zero and the remaining elements are ones. Then the same P matrix can be used to find $\pi_{i|j}$.
+$$ \pi_{i|j} = P^{i-j} \begin{bmatrix}
+\pi_{j|j} \\ \mathbf{1}_\omega
+\end{bmatrix} $$
+Define $\bar{b}_i$ to be the largest scaling over the different distributions generated by starting from the upper bound of $\beta_j$ based on $\pi_j$ for $j = 1, \dots, i-1$. $$ \bar{b}_i(q) = \max \{ b(\pi_{i|0},q), \dots, b(\pi_{i|i-1},q) \} $$ Using these tube scalings instead of those generated by starting at the distribution of $\beta_0$ will guarantee recursive feasibility of the tube MPC problem.
+
+
 
 
 \end{document}          
