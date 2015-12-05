@@ -1,7 +1,8 @@
 clear; close all;
 
 f = @(lambda) calcTubeParam(lambda);
-[lambda2 y] = Bisection(0.2,0.99,5,f)
+fplot(f,[0.2,0.99],5);
 
-%lambda = 0.2741;
-V2 = calcTubeParamV(lambda1)
+[lambda1 y] = Bisection(0.9,0.99,5,f)
+
+V1 = calcTubeParamV(lambda1)

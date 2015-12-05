@@ -54,7 +54,7 @@ for k = 1:200
         w(:,i) = sigma^0.5*randn(2,1);
         z(:,i+1) = Phi*z(:,i) + B*c(:,1);
         e(:,i+1) = Phi*e(:,i) + Bw*w(:,i);
-        x(:,i+1) = z(:,i+1) + e(:,i+1); 
+        %x(:,i+1) = z(:,i+1) + e(:,i+1); 
         
         C(i) = norm(u(:,i))^2 + norm(x(:,i))^2;
         viol1(i) = (g1'*x(:,i) > h1);
