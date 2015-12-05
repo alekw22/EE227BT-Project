@@ -6,9 +6,9 @@ function c = solveTubeFHOCP_S(xk, zk, Phi, B, N, Nhat, V1, g1, h1, bq1, V2, g2, 
 
 %% Solve problem
 cvx_begin quiet
-    variables c(1,N-1)
+    variables c(2,N-1)
     variables z(length(xk),N)
-    Jk = [xk' c(1)' 1] * [xk' c(1)' 1]';
+    Jk = [xk' c(:,1)' 1] * [xk' c(:,1)' 1]';
     minimize(Jk)
     subject to
         z(:,1) == zk;

@@ -1,3 +1,4 @@
+% Runs the Tube MPC algorithm on the cart pendulum example on Cannon (2014)
 clear; close all;
 
 A = [ 1.6   1.1;  -0.7   1.2];  %System Model
@@ -75,8 +76,6 @@ for k = 1:200
     cost(k) = sum(C);
     v(k,:) = viol;
 end
-
-
 
 % %Repeated Trials at k = 0
 % for j = 1:T

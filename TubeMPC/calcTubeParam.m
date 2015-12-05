@@ -1,4 +1,6 @@
 function cvx_optval = calcTubeParam(lambda)
+%Solves the optimization problem for the tube parameter V for a fixed
+%lambda
 
 %Cannon
 % g = [1 0.2]';
@@ -44,6 +46,6 @@ subject to:
     U == semidefinite(K1)
 cvx_end
 
-V = inv(U);
+V = inv(U)
 
 end

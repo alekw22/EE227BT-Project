@@ -1,4 +1,6 @@
 function [xmin,fmin]=Bisection(a,b,n,f)
+%Performs the bisection algorithm
+
 
 % First plot the function
 fplot(f,[a,b],5);
@@ -16,7 +18,6 @@ k=1;
 
 % If the number of iterations are less than the max. iterations
 while k<=n
-    k
     x1=a;
     x2=b;
     x3=(a+b)/2;
