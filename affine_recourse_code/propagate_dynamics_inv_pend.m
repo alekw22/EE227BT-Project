@@ -1,11 +1,13 @@
-function [ res1,res2,res3 ] = propagate_dynamics(A,B,T,u,x_01,x_02,F,u_0,mu,Sigma)
+function [ res1,res2,res3 ] = propagate_dynamics_inv_pend(A,B,Bw,T,u,x_01,x_02,F,u_0,mu,Sigma)
 %UNTITLED4 Summary of this function goes here
 %   Detailed explanation goes here
 
 n = size(x_01,1);
+nn = size(B,2);
+nw = size(Bw,2);
 x = zeros(n*(T+1),1); 
 x_nfb = zeros(n*(T+1),1); 
-U_fb = zeros(n*T,1);
+U_fb = zeros(nn*T,1);
 x(1:n,:) = x_01;
 x_nfb(1:n,:) = x_02;
 
@@ -23,15 +25,15 @@ for t=0:T-1
 end
 
 for i = 1:T
-    u_fb = u_0(n*(i-1)+1:n*i,:) + F(n*(i-1)+1:n*i,1:n*i)*x(1:n*i,:);
-    x((n*i)+1:n*(i+1),:) = A*x(n*(i-1)+1:n*i,:) + B*u_fb + Wt(n*(i-1)+1:n*i,:);
-    U_fb(n*(i-1)+1:n*i,:) = u_fb;
+    u_fb = u_0(nn*(i-1)+1:nn*i,:) + F(nn*(i-1)+1:nn*i,1:n*i)*x(1:n*i,:);
+    x((n*i)+1:n*(i+1),:) = A*x(n*(i-1)+1:n*i,:) + B*u_fb + Bw*Wt(nw*(i-1)+1:nw*i,:);
+    U_fb(nn*(i-1)+1:nn*i,:) = u_fb;
     
 end
 
 for i = 1:T
     %u_fb = u_0(n*(i-1)+1:n*i,:) + F(n*(i-1)+1:n*i,1:n*i)*x(1:n*i,:);
-    x_nfb((n*i)+1:n*(i+1),:) = A*x_nfb(n*(i-1)+1:n*i,:) + B*u(n*(i-1)+1:n*i,:)+ Wt(n*(i-1)+1:n*i,:);  
+    x_nfb((n*i)+1:n*(i+1),:) = A*x_nfb(n*(i-1)+1:n*i,:) + B*u(nn*(i-1)+1:nn*i,:)+ Bw*Wt(nw*(i-1)+1:nw*i,:);  
     
 end
 
@@ -66,4 +68,6 @@ res2 = x_nfb;
 res3 = U_fb;
 
 end
+
+
 
