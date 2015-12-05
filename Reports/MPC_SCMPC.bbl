@@ -1,5 +1,8 @@
 \begin{thebibliography}{1}
 
+\bibitem{pendulum}
+Control tutorials for matlab and simulink.
+
 \bibitem{MPCbook}
 F.~Borrelli, A.~Bemporad, and M.~Morari.
 \newblock Predictive control for linear and hybrid systems.

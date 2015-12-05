@@ -1,5 +1,5 @@
 \documentclass[12 pt]{report}
-\usepackage{fullpage, amssymb, amsmath, graphicx}
+\usepackage{fullpage, amssymb, amsmath, graphicx, caption, subcaption}
 
 % Title Page
 \title{Using Convex Optimization to Control Linear Systems with Disturbances}
@@ -11,6 +11,9 @@
 
 \begin{abstract}
 \end{abstract}
+
+\section{Introduction}
+This report concerns the application of convex optimization to control linear systems subject to disturbances. In discrete time, the system dynamics are of the form $$ x_{t+1} = Ax_t + Bu_t + B_w w_t $$ where $x_t \in \mathbb{R}^n$ is the state vector, $u_t \in \mathbb{R}^m$ is the input vector, $w_t \in \mathbb{R}^p$ is a vector of disturbances, and $A$, $B$, and $B_w$ are real matrices of appropriate dimension. Three techniques were studied: affine recourse, tube 
 
 \section{Model Predictive Control}
 
@@ -160,7 +163,8 @@ In each case, the chance constraints are single linear inequalities so they both
 The system was simulated for 3000 closed loop time steps, as shown in Figure \ref{fig:SCMPC_3000}. The number of constraint violations was 296 for $x_1$ and 300 for $x_2$ giving empirical violation levels of 9.87\% and 10\%, respectively.
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{SCMPC_3000.jpg}
+	\centering
+	\includegraphics[width=3.5in]{SCMPC_3000.jpg}
 	\caption{The closed loop system trajectory using the scenario MPC controller is plotted with blue dots for 3000 closed loop time steps. The state constraints are plotted as solid black lines.}
 	\label{fig:SCMPC_3000}
 \end{figure}
@@ -184,7 +188,7 @@ In this example, there is only a single linear inequality constraint on the stat
 	\label{fig:cart-pendulum}
 \end{figure}
 
-The three control techniques were then applied to the system of a pendulum hanging from a cart, shown in Figure \ref{fig:cart-pendulum}. The system was adapted from ****** SOURCE ****** so that rotational damping was included and the system was linearized about the stable equilbrium point. The four states of the system are the cart position, $x$, and velocity, $\dot{x}$, and pendulum angle, $\theta$, and angular velocity, $\dot{\theta}$. The input to the system is the force pushing on the cart and the disturbance to the system acts in this channel. The nonlinear system dynamics are given below, where $I$ is the moment of inertia of the pendulum, $m$ is the mass of the pendulum, $l$ is half the length of the pendulum, $c$ is the rotational damping coefficient, $M$ is the mass of the cart, and $b$ is the linear damping coefficient.
+The three control techniques were then applied to the system of a pendulum hanging from a cart, shown in Figure \ref{fig:cart-pendulum}. The system was adapted from \cite{pendulum} so that rotational damping was included and the system was linearized about the stable equilbrium point. The four states of the system are the cart position, $x$, and velocity, $\dot{x}$, and pendulum angle, $\theta$, and angular velocity, $\dot{\theta}$. The input to the system is the force pushing on the cart and the disturbance to the system acts in this channel. The nonlinear system dynamics are given below, where $I$ is the moment of inertia of the pendulum, $m$ is the mass of the pendulum, $l$ is half the length of the pendulum, $c$ is the rotational damping coefficient, $M$ is the mass of the cart, and $b$ is the linear damping coefficient.
 \begin{align*}
 (I+ml^2)\ddot{\theta} + c \dot{\theta} + mgl \sin \theta &= -ml \ddot{x} \cos \theta \\
 (M+m)\ddot{x} + b\dot{x} + ml \ddot{\theta} &= F
@@ -214,12 +218,48 @@ The goal was to drive the system to the origin with minimal control effort and w
 
 When considering the chance constraints for the scenario MPC implementation, the two constraints $\theta_t \leq 0.1$ and $\theta_t \geq -0.1$ were considered jointly. Although there are two linear inequality constraints, their dividing hyperplanes are parallel to each other so the support rank is still $\rho = 1$. Therefore, the necessary sample complexity is $K = 4$.
 
+\begin{figure}
+	\centering
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width = 0.8\linewidth]{SCMPC_cartPenX.jpg}
+		\label{fig:SCMPC_cartPenX}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\includegraphics[width = 0.8\linewidth]{SCMPC_cartPenU.jpg}
+		\label{fig:SCMPC_cartPenU}
+	\end{subfigure}
+	\caption{One the left, the cart position and pendulum angle are plotted for 50 simulations over 150 time steps. The applied control input is shown on the right.}
+\end{figure}
+
 The disturbance $w$ is a uniform scalar random variable so $\alpha = w^2$ has a density function given by $$ f_\alpha (x) = \begin{cases}
 \frac{1}{2w_{max}\sqrt{x}} & 0 \leq x \leq w_{max}^2 \\
 0 &	\mathrm{otherwise}
 \end{cases} $$
 This density function was used to find the tube scalings for the tube MPC implementation. To avoid evaluating $f_\alpha$ at zero, where it is infinite, a midpoint Riemann sum was used for numerical integration instead of the trapezoid rule.
 
+\section{tables}
+
+\begin{center}
+\begin{tabular}{| r | c | c | c |}
+	\hline
+	& $V_{emp}^{(1)}$ & $V_{emp}^{(2)}$ & $\ell_{avg}$ \\ \hline
+	AR & 0.20\% & 0.13\% & 9.49\\ \hline
+	SCMPC & 9.87\%  & 10\% & 5.71 \\ \hline
+	TMPC & 0.07\% & 0\% & 11.25\\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+	\begin{tabular}{| r | c | c |}
+		\hline
+		& $\bar{V}_{emp}$ & $C_{avg}$ \\ \hline
+		AR    &        &  \\ \hline
+		SCMPC & 8\%    &  \\ \hline
+		TMPC  &        &  \\ \hline
+	\end{tabular}
+\end{center}
 
 
 \bibliographystyle{plain}

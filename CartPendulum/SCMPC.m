@@ -62,7 +62,9 @@ ylabel('x [m]')
 
 subplot(212)
 plot((0:T)*0.05, squeeze(xCL(3,:,:)))
-ylabel('\phi [rad]')
+hold on
+plot(xlim, [0.1 0.1; -0.1 -0.1]', 'k')
+ylabel('\theta [rad]')
 xlabel('Time [s]')
 
 figure
@@ -81,6 +83,18 @@ plot((0:T)*0.05, Vemp)
 ylabel('Percent')
 xlabel('Time [s]')
 title('Empirical Violation Level')
+
+%% Cost
+Cmat = zeros(T,M);
+for m = 1:M
+    for t = 1:T
+        Cmat(t,m) = xCL(:,t,m)'*Q*xCL(:,t,m) + R*uCL(t,m)^2;
+    end
+end
+
+Cavg = mean(Cmat,2);
+Ctot = sum(Cavg)
+
 
 %%
 % save('resultsN6.mat')
