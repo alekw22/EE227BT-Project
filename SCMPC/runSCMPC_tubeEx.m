@@ -74,12 +74,14 @@ end
 Vemp = numViols/M    % empirical violation rate
 
 % stage costs
-% Cvect = zeros(1,T);
-% for t = 1:T
-%     Cvect(t) = xCL(:,t)'*xCL(:,t) + uCL(:,t)'*uCL(:,t);
-% end
-% Cavg = mean(Cvect)   % average closed loop stage cost
-% Cstd = std(Cvect)    % std. deviation of closed loop stage cost
+Cmat = zeros(T,M);
+for t = 1:T
+    for m = 1:M
+        Cmat(t,m) = xCL(:,t,m)'*xCL(:,t,m) + uCL(t,m)'*uCL(t,m);
+    end
+end
+Cavg = mean(Cmat,2)   % average closed loop stage cost
+sum(Cavg)
 
 %% Save
 % save('data200_tubeEx.mat')

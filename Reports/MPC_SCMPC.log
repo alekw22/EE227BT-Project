@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.9)  4 DEC 2015 14:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2015.9.9)  4 DEC 2015 18:32
 entering extended mode
 **MPC_SCMPC.tex
 (MPC_SCMPC.tex
@@ -127,7 +127,27 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-(MPC_SCMPC.aux)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption.sty"
+Package: caption 2015/09/17 v3.3-111 Customizing captions (AR)
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\caption3.sty"
+Package: caption3 2015/09/20 v1.7-115 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen114
+\captionmargin@=\dimen115
+\captionwidth=\dimen116
+\caption@tempdima=\dimen117
+\caption@indent=\dimen118
+\caption@parindent=\dimen119
+\caption@hangindent=\dimen120
+)
+\c@ContinuedFloat=\count101
+)
+("C:\Program Files\MiKTeX 2.9\tex\latex\caption\subcaption.sty"
+Package: subcaption 2015/09/15 v1.1-100 Sub-captions (AR)
+\c@subfigure=\count102
+\c@subtable=\count103
+) (MPC_SCMPC.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
@@ -142,18 +162,20 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
  ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count101
-\scratchdimen=\dimen114
+\scratchcounter=\count104
+\scratchdimen=\dimen121
 \scratchbox=\box28
-\nofMPsegments=\count102
-\nofMParguments=\count103
+\nofMPsegments=\count105
+\nofMParguments=\count106
 \everyMPshowfont=\toks21
-\MPscratchCnt=\count104
-\MPscratchDim=\dimen115
-\MPnumerator=\count105
-\makeMPintoPDFobject=\count106
+\MPscratchCnt=\count107
+\MPscratchDim=\dimen122
+\MPnumerator=\count108
+\makeMPintoPDFobject=\count109
 \everyMPtoPDFconversion=\toks22
 )
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Try loading font information for U+msa on input line 10.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -169,32 +191,46 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 <SCMPC_3000.jpg, id=40, 562.1pt x 421.575pt>
 File: SCMPC_3000.jpg Graphic file (type jpg)
  <use SCMPC_3000.jpg>
-Package pdftex.def Info: SCMPC_3000.jpg used on input line 163.
-(pdftex.def)             Requested size: 469.75502pt x 352.31299pt.
- [7 <./SCMPC_3000.jpg>] <SCMPC_200x6.jpg, id=44, 562.1pt x 421.575pt>
+Package pdftex.def Info: SCMPC_3000.jpg used on input line 167.
+(pdftex.def)             Requested size: 252.94499pt x 189.70699pt.
+
+<SCMPC_200x6.jpg, id=41, 562.1pt x 421.575pt>
 File: SCMPC_200x6.jpg Graphic file (type jpg)
  <use SCMPC_200x6.jpg>
-Package pdftex.def Info: SCMPC_200x6.jpg used on input line 174.
+Package pdftex.def Info: SCMPC_200x6.jpg used on input line 178.
 (pdftex.def)             Requested size: 469.75502pt x 352.31299pt.
 
-<cart-pendulum.jpg, id=45, 154.6578pt x 147.9126pt>
+<cart-pendulum.jpg, id=42, 154.6578pt x 147.9126pt>
 File: cart-pendulum.jpg Graphic file (type jpg)
  <use cart-pendulum.jpg>
-Package pdftex.def Info: cart-pendulum.jpg used on input line 182.
+Package pdftex.def Info: cart-pendulum.jpg used on input line 186.
 (pdftex.def)             Requested size: 469.75502pt x 449.2685pt.
 
-[8 <./SCMPC_200x6.jpg>] [9 <./cart-pendulum.jpg>] (MPC_SCMPC.bbl [10]) [11
+[7] [8 <./SCMPC_3000.jpg>] [9 <./SCMPC_200x6.jpg>] [10 <./cart-pendulum.jpg>]
+<SCMPC_cartPenX.jpg, id=55, 562.1pt x 421.575pt>
+File: SCMPC_cartPenX.jpg Graphic file (type jpg)
+ <use SCMPC_cartPenX.jpg>
+Package pdftex.def Info: SCMPC_cartPenX.jpg used on input line 225.
+(pdftex.def)             Requested size: 169.1113pt x 126.8337pt.
+
+<SCMPC_cartPenU.jpg, id=56, 562.1pt x 421.575pt>
+File: SCMPC_cartPenU.jpg Graphic file (type jpg)
+ <use SCMPC_cartPenU.jpg>
+Package pdftex.def Info: SCMPC_cartPenU.jpg used on input line 230.
+(pdftex.def)             Requested size: 169.1113pt x 126.8337pt.
+
+(MPC_SCMPC.bbl [11 <./SCMPC_cartPenX.jpg> <./SCMPC_cartPenU.jpg>]) [12
 
 ]
 (MPC_SCMPC.aux) ) 
 Here is how much of TeX's memory you used:
- 2090 strings out of 493698
- 25523 string characters out of 3144416
- 88415 words of memory out of 3000000
- 5411 multiletter control sequences out of 15000+200000
+ 3211 strings out of 493698
+ 45805 string characters out of 3144416
+ 114177 words of memory out of 3000000
+ 6522 multiletter control sequences out of 15000+200000
  13670 words of font info for 52 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 27i,9n,26p,1066b,220s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,9n,38p,1065b,372s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
 bx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb
 ><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Pro
@@ -208,9 +244,9 @@ y10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
 C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Progra
 m Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program Files/
 MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on MPC_SCMPC.pdf (13 pages, 262106 bytes).
+Output written on MPC_SCMPC.pdf (14 pages, 315545 bytes).
 PDF statistics:
- 104 PDF objects out of 1000 (max. 8388607)
+ 109 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

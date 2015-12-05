@@ -41,8 +41,8 @@ h2 = 0.1;
 % V2 = calcTubeParamV(lambda2);
 bq2 = bq1;
 
-%%Run 6 Steps 200 times
-% 
+%Run 6 Steps 200 times
+
 % for k = 1:200
 %     k
 %     x = zeros(2,N);
@@ -78,7 +78,7 @@ bq2 = bq1;
 % end
 
 
-%Run 3000 Steps
+% Run 3000 Steps
 
 coeff = [1 0.1 0.01];
 
